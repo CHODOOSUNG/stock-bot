@@ -24,4 +24,4 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: python trading_bot_final.py
+        run: python trading_bot.py
