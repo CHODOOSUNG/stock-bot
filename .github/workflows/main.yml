@@ -1,25 +1,28 @@
 name: Stock Bot Daily
 
 on:
+  workflow_dispatch: # 수동 실행 버튼
   schedule:
-    - cron: '0 7 * * *' # 한국시간 16:00 (UTC 07:00)
-  workflow_dispatch: # 직접 실행 버튼을 만들기 위한 코드
+    # 한국 시간 기준 아침 9:30, 13:00, 16:00 (UTC 시간으로 변환 적용)
+    # 한국 시간은 UTC보다 9시간 빠릅니다.
+    # 09:30 KST -> 00:30 UTC
+    # 13:00 KST -> 04:00 UTC
+    # 16:00 KST -> 07:00 UTC
+    - cron: '30 0 * * *'
+    - cron: '0 4 * * *'
+    - cron: '0 7 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
       - name: Install dependencies
         run: pip install pandas requests
-
       - name: Run bot
         env:
           TOKEN: ${{ secrets.TOKEN }}
