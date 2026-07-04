@@ -1,0 +1,27 @@
+name: Stock Bot Daily
+
+on:
+  schedule:
+    - cron: '0 7 * * *' # 한국시간 16:00 (UTC 07:00)
+  workflow_dispatch: # 직접 실행 버튼을 만들기 위한 코드
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install pandas requests
+
+      - name: Run bot
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: python trading_bot_final.py
